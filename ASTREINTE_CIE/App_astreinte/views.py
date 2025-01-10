@@ -339,6 +339,9 @@ def get_numero_astreinte(count):
     numero = f"ASTREINTE CIE : N°{str(count).zfill(2)}.{year}"
     return numero
 
+
+#comments-----------------
+
 # Dictionnaire pour mapper les directions et sous-directions aux cellules spécifiques
 cell_mapping = {
     "CDG": {"nom": "K13", "tel": "X13", "cell": "AG13"},
@@ -405,7 +408,7 @@ cell_mapping = {
 
 
 def generate_astreinte_and_download(request):
-    # Charger le fichier modèle
+        # Charger le fichier modèle 
     template_path = os.path.join(settings.MEDIA_ROOT, 'files', 'ASTREINTE_CIE.xlsx')
     wb = load_workbook(template_path)
     sheet = wb.active

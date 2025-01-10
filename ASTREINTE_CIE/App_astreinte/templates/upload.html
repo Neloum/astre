@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Télécharger et Gérer les Fichiers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .upload-container {
+            width: 80%;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2>Télécharger un Nouveau Fichier</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ upload_form.as_p }}
+            <button type="submit">Télécharger</button>
+        </form>
+
+        <h2>Liste des Fichiers Uploadés</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom du Fichier</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                <tr>
+                    <td>{{ file.file.name }}</td>
+                    <td>
+                        <form method="post" enctype="multipart/form-data" action="{% url 'upload_file' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="file_id" value="{{ file.id }}">
+                            <input type="file" name="replacement_file">
+                            <button type="submit" name="replace">Remplacer</button>
+                        </form>
+                        <form method="post" action="{% url 'upload_file' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="file_id" value="{{ file.id }}">
+                            <button type="submit" name="delete">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">Aucun fichier téléchargé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Bouton pour extraire les données de tous les fichiers -->
+        <form method="POST" action="{% url 'extract_data_from_all_files' %}">
+            {% csrf_token %}
+            <button type="submit">Extraire les données de tous les fichiers</button>
+        </form>
+        <form method="POST" action="{% url 'generer_astreinte' %}">
+            {% csrf_token %}
+            <button type="submit">Générer Astreinte</button>
+        </form>
+        
+    </div>
+</body>
+</html>

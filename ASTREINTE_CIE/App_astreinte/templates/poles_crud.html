@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Pôles</title>
+</head>
+<body>
+
+<h2>{% if editing %}Modifier{% else %}Ajouter{% endif %} un pôle</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if editing %}
+        <button type="submit" name="edit">Enregistrer</button>
+    {% else %}
+        <button type="submit" name="add">Ajouter</button>
+    {% endif %}
+</form>
+
+<h2>Liste des Pôles</h2>
+<table>
+    <tr>
+        <th>Nom</th>
+        
+        <th>Actions</th>
+    </tr>
+    {% for pole in poles %}
+    <tr>
+        <td>{{ pole.nom }}</td>
+        
+        <td>
+            <!-- Bouton Modifier -->
+            <a href="{% url 'pole_crud_view' pole.id %}">Modifier</a>
+            
+            <!-- Bouton Supprimer -->
+            <form action="{% url 'pole_crud_view' pole.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" name="delete">Supprimer</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

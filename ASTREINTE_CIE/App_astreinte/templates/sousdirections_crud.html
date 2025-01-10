@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Sous-Directions</title>
+</head>
+<body>
+
+<h2>{% if editing %}Modifier{% else %}Ajouter{% endif %} une sous-direction</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if editing %}
+        <button type="submit" name="edit">Enregistrer</button>
+    {% else %}
+        <button type="submit" name="add">Ajouter</button>
+    {% endif %}
+</form>
+
+<h2>Liste des Sous-Directions</h2>
+<table>
+    <tr>
+        <th>Nom</th>
+        <th>Direction</th>
+        <th>Actions</th>
+    </tr>
+    {% for sousdirection in sousdirections %}
+    <tr>
+        <td>{{ sousdirection.lib_sous_direction }}</td>
+        <td>{{ sousdirection.direction.nom }}</td>
+        <td>
+            <!-- Bouton Modifier -->
+            <a href="{% url 'sousdirection_crud_view' sousdirection.id %}">Modifier</a>
+            
+            <!-- Bouton Supprimer -->
+            <form action="{% url 'sousdirection_crud_view' sousdirection.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" name="delete">Supprimer</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

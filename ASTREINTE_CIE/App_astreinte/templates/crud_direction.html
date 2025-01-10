@@ -1,0 +1,10 @@
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">{% if objet %}Modifier{% else %}Ajouter{% endif %}</button>
+
+    {% if objet %}
+        <button type="submit" name="delete" value="true">Supprimer</button>
+    {% endif %}
+</form>

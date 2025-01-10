@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supprimer Direction</title>
+</head>
+<body>
+
+<h2>Êtes-vous sûr de vouloir supprimer cette direction ?</h2>
+<p>{{ direction.nom }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Confirmer la suppression</button>
+</form>
+
+<a href="{% url 'crud_view_directions' %}">Annuler</a>
+
+</body>
+</html>

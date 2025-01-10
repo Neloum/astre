@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Directions</title>
+</head>
+<body>
+
+<h2>Ajouter une nouvelle direction</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Ajouter</button>
+</form>
+
+<h2>Liste des Directions</h2>
+<table>
+    <tr>
+        <th>Nom</th>
+        <th>secretaire</th>
+        <th>Actions</th>
+    </tr>
+    {% for direction in directions %}
+    <tr>
+        <td>{{ direction.nom }}</td>
+        <td>{{ direction.secretaire }}</td></td>
+        <td>
+            <!-- Bouton Modifier -->
+            <a href="{% url 'modifier_direction' direction.id %}">Modifier</a>
+            
+            <!-- Bouton Supprimer -->
+            <form action="{% url 'supprimer_direction' direction.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Supprimer</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
